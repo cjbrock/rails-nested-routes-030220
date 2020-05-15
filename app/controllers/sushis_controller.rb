@@ -1,4 +1,6 @@
 class SushisController < ApplicationController
+  layout "custom"
+
   before_action :set_sushi, only: [:show, :edit, :update, :destroy]
 
   def index
@@ -9,10 +11,12 @@ class SushisController < ApplicationController
     if !@sushi
       redirect_to sushis_path
     end
+    render layout: "application"
   end
 
   def new
     @sushi = Sushi.new
+    5.times { @sushi.ingredients.build}
   end
 
   def create
@@ -55,7 +59,7 @@ class SushisController < ApplicationController
   end
 
   def sushi_params
-    params.require(:sushi).permit(:name)
+    params.require(:sushi).permit(:name, ingredients_attributes:[:id, :name, :calories, :serving_size_grams])
   end
 
 
